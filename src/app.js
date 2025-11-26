@@ -34,11 +34,13 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/api/productos", productoRoutes);
-app.use("/api/categorias", categoriaRoutes);
-app.use("/api/proveedores", proveedorRoutes);
-app.use("/api/almacenes", almacenRoutes);
-app.use("/api/movimientos", movimientoRoutes);
-app.use("/api/usuarios", usuarioRoutes);
+const authMiddleware = require("./middlewares/auth.middleware");
+
+app.use("/api/productos", authMiddleware, productoRoutes);
+app.use("/api/categorias", authMiddleware, categoriaRoutes);
+app.use("/api/proveedores", authMiddleware, proveedorRoutes);
+app.use("/api/almacenes", authMiddleware, almacenRoutes);
+app.use("/api/movimientos", authMiddleware, movimientoRoutes);
+app.use("/api/usuarios", usuarioRoutes); // Rutas de usuario (login/register) públicas
 
 module.exports = app;
